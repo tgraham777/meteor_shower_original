@@ -1,31 +1,51 @@
-var canvas = document.getElementById('screen');
-var context = canvas.getContext('2d');
+;(function() {
+  var Game = function(canvasId) {
+    var canvas = document.getElementById(canvasId);
+    var screen = canvas.getContext('2d');
+    var gameSize = { x: canvas.width, y: canvas.height };
 
-// function Box(x, y) {
-//   this.x = x;
-//   this.y = y;
-//   this.width = 10;
-//   this.height = 10;
-// }
-//
-// Box.prototype.draw = function() {
-//   context.fillRect(this.x, this.y, this.width, this.height);
-//   return this;
-// };
-//
-// Box.prototype.move = function() {
-//   if(this.y <= canvas.height - this.height) {
-//     this.y++;
-//   }
-//   return this;
-// };
-//
-// var boxes = [new Box(50, 50), new Box(70, 50), new Box(90,50), new Box(110, 50)]
-//
-// requestAnimationFrame(function gameLoop() {
-//   context.clearRect(0, 0, canvas.width, canvas.height);
-//   boxes.forEach(function (box) {
-//     box.draw().move();
-//   });
-//   requestAnimationFrame(gameLoop);
-// });
+    this.bodies = [new Player(this, gameSize)];
+
+    var self = this;
+    var tick = function() {
+      self.update();
+      self.draw(screen, gameSize);
+      requestAnimationFrame(tick);
+    };
+
+    tick();
+  };
+
+  Game.prototype = {
+    update: function() {
+
+    },
+
+    draw: function(screen, gameSize) {
+      for (var i = 0; i < this.bodies.length; i++) {
+         drawRect(screen, this.bodies[i]);
+      }
+    }
+  };
+
+  var Player = function(game, gameSize) {
+    this.size = { x: 15, y: 15 };
+    this.center = { x: gameSize.x / 2, y: gameSize.y - this.size.x };
+  };
+
+  Player.prototype = {
+    update: function() {
+
+    }
+  };
+
+  var drawRect = function(screen, body) {
+    screen.fillRect(body.center.x - body.size.x / 2,
+                    body.center.y - body.size.y / 2,
+                    body.size.x, body.size.y);
+  };
+
+  window.onload = function() {
+    new Game("screen");
+  };
+})();
