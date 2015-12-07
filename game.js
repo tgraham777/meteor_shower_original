@@ -1,6 +1,6 @@
-// var canvas = document.getElementById('game');
-// var context = canvas.getContext('2d');
-//
+var canvas = document.getElementById('screen');
+var context = canvas.getContext('2d');
+
 // function Box(x, y) {
 //   this.x = x;
 //   this.y = y;
